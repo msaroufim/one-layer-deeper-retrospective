@@ -20,9 +20,13 @@ Only **18 Hard uploads from five accounts** certified any depth on seen-modulus 
 
 ## What the three leaders did
 
+**Hard's hidden twist was reversing the decimal digits of N in the prompt.** A true modulus of `253` appeared as `352`; x, T, and the answer kept their normal digit order. The recurrence was still forward squaring. Participants had to recover the input convention as well as compute the answer.
+
 Two excluded entries also reached T=64. Their code encoded hidden training inputs and labels into reported loss values, violating the explicit ban on exploiting the metric recorder. We therefore discuss the three remaining leaders.
 
 All three passed through T=64. Examples below use pseudocode except the marked source excerpt.
+
+Yash and Sahil included both digit orders among their input interpretations. CodeReclaimers' modulus-mapping search also included digit reversal. Their generalization therefore included identifying the encoding, not learning a reversed arithmetic recurrence.
 
 ![Three illustrated mechanisms: small remainder tables, learned digit cells, and selection among supplied programs.](assets/submission-ideas.svg)
 

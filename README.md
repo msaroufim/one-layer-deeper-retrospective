@@ -96,6 +96,6 @@ Both failed T=1 certification.
 
 ## Next steps
 
-Could we extend Yash's approach by learning both the small operations and how to combine them? Execution traces might supply the intermediate supervision automatically. Perhaps learning reliable pieces first would make long serial computations easier to learn across tasks.
+Could one model learn the digit operations while another learns the program that uses them? We could train and freeze the operations first, then teach the controller from execution traces. The test would be whether it can assemble new algorithms and run them for more steps without hand-written wiring.
 
 All 15,602 uploads are preserved in the [private GPU MODE dataset on Hugging Face](https://huggingface.co/datasets/GPUMODE/one-layer-deeper-submissions) for further analysis.

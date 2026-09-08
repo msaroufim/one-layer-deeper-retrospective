@@ -20,6 +20,8 @@ Only **18 Hard uploads from five accounts** certified any depth on seen-modulus 
 
 ## What the three leaders did
 
+Two excluded entries also reached T=64. Their code encoded hidden training inputs and labels into reported loss values, violating the explicit ban on exploiting the metric recorder. We therefore discuss the three remaining leaders.
+
 All three passed through T=64. Examples below use pseudocode except the marked source excerpt.
 
 ![Three illustrated mechanisms: small remainder tables, learned digit cells, and selection among supplied programs.](assets/submission-ideas.svg)

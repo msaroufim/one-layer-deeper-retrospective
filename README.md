@@ -79,9 +79,9 @@ We intended the CPU restriction to prevent escaping the memory budget. The repor
 
 The transitions are learned rather than computed by an explicit squaring formula. It failed T=1 certification.
 
-## Other ideas worth testing
+## Interesting ideas that didn't quite work
 
-We checked these five Hard uploads. All failed T=1 certification; the techniques' benefit remains unproven.
+None of these submissions passed all the single-step (T=1) tests on Hard.
 
 | Submission | Implemented idea |
 |---|---|

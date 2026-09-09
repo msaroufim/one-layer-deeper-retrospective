@@ -24,11 +24,11 @@ Thanks to az and apaz for submissions that helped us refine the task and rules d
 
 **Hard reversed the decimal digits of N in the prompt.** If N was `253`, it appeared in the Hard dataset as `352`; x, T, and the answer kept their normal digit order. The recurrence was still modular squaring.
 
-We discuss each leader's latest archived Hard upload with 100% aggregate accuracy: CodeReclaimers' `58311e4a`, Yash Kant's `86e9acf2`, and Sahil Verma's `9fa00118`. All certified T=64 on both seen and unseen moduli.
+We discuss each leader's latest archived Hard upload with 100% aggregate accuracy: CodeReclaimers' [58311e4a](https://gist.github.com/msaroufim/eaebb58654566d836dd8cab7bca5be35#file-submission-py), Yash Kant's [86e9acf2](https://gist.github.com/msaroufim/5bddf157777bc83c8adbeac2b346f191#file-submission-py), and Sahil Verma's [9fa00118](https://gist.github.com/msaroufim/4bb2784e43299c3cdd71ad81ed428914#file-submission-py). All certified T=64 on both seen and unseen moduli.
 
 ![Three illustrated mechanisms: computed residue transitions, learned digit cells, and selection among supplied programs.](assets/submission-ideas.svg)
 
-**CodeReclaimers (`58311e4a`) selects an arithmetic law, then computes its remainder tables.** It compares candidate laws with learned predictions. After selecting a law, it constructs the transitions directly with this exact expression:
+**CodeReclaimers ([58311e4a](https://gist.github.com/msaroufim/eaebb58654566d836dd8cab7bca5be35#file-submission-py)) selects an arithmetic law, then computes its remainder tables.** It compares candidate laws with learned predictions. After selecting a law, it constructs the transitions directly with this exact expression:
 
 ```python
 (r + D * r * (r - 1) // 2) % m
@@ -36,7 +36,7 @@ We discuss each leader's latest archived Hard upload with 100% aggregate accurac
 
 For D=2, this is `r*r % m`. The code caches maps for 1, 2, 4, and more transitions, then composes them using the bits of T. Separate small-modulus results constrain the final integer answer.
 
-**Yash Kant (`86e9acf2`) learned digit operations inside a supplied calculator.** Small networks predict multiplication, addition, subtraction, carries, and borrows. A multiplication cell can learn `7 × 8 + carry 3 = 59`: output digit 9 and carry 5.
+**Yash Kant ([86e9acf2](https://gist.github.com/msaroufim/5bddf157777bc83c8adbeac2b346f191#file-submission-py)) learned digit operations inside a supplied calculator.** Small networks predict multiplication, addition, subtraction, carries, and borrows. A multiplication cell can learn `7 × 8 + carry 3 = 59`: output digit 9 and carry 5.
 
 The supplied procedure repeats those learned operations. In pseudocode:
 
@@ -48,7 +48,7 @@ for _ in range(T):
 
 The digit cells are trained from arithmetic targets. The complete answer circuit is not trained end to end.
 
-**Sahil Verma (`9fa00118`) selected from supplied exact programs.** The code contains 63,525 polynomial formulas, including squaring. Four input-reading choices produce 254,100 candidates. Examples eliminate incorrect candidates; learned weights select the formula and output placement.
+**Sahil Verma ([9fa00118](https://gist.github.com/msaroufim/4bb2784e43299c3cdd71ad81ed428914#file-submission-py)) selected from supplied exact programs.** The code contains 63,525 polynomial formulas, including squaring. Four input-reading choices produce 254,100 candidates. Examples eliminate incorrect candidates; learned weights select the formula and output placement.
 
 ```python
 candidates = keep_programs_matching(supplied_programs, training_examples)
@@ -69,7 +69,7 @@ All three leaderboard finalists and Apaz deserve huge credit for their solutions
 
 ## Honourable mention
 
-**alirezashirvani-jr (`f5d75083`) reached 10.38% aggregate Hard accuracy.** It represents numbers as positions on clocks with different periods, learns transitions between those positions, and combines learned votes into an integer answer. Its larger-number branch uses learned Fourier operators that can be composed at evaluation. The transitions are learned rather than computed by an explicit squaring formula. Although it failed T=1 certification, its learned transitions distinguish it from the top leaderboard submissions, and its results are promising.
+**alirezashirvani-jr ([f5d75083](https://gist.github.com/msaroufim/83873ff70257c3aed501bf51cb0efe25#file-submission-py)) reached 10.38% aggregate Hard accuracy.** It represents numbers as positions on clocks with different periods, learns transitions between those positions, and combines learned votes into an integer answer. Its larger-number branch uses learned Fourier operators that can be composed at evaluation. The transitions are learned rather than computed by an explicit squaring formula. Although it failed T=1 certification, its learned transitions distinguish it from the top leaderboard submissions, and its results are promising.
 
 ## Interesting ideas that didn't quite work
 
@@ -77,11 +77,11 @@ None of these submissions passed all the single-step (T=1) tests on Hard, but re
 
 | Submission | Implemented idea |
 |---|---|
-| AHappyCPU (`1f7c46f2`) | Gradually replaces continuous recurrent states with discrete choices from a learned 64-entry codebook. |
-| Ethan Davis (`24c58fc1`) | Uses N to generate convolution kernels that move information around a cyclic tape, making the update operation depend on the modulus. |
-| Chris Wood (`7f055799`) | Learns a five-instruction program from 16 supplied integer operations by comparing program outputs with labels. The interpreter is fixed; instruction composition is learned. |
-| Rohan Sehgal (`3854d99a`) | Learns wiring and add/multiply choices for three parallel gates per expert, with exact integer forward values and approximate gradients. Modular reduction is supplied. |
-| Aqua (`55bec2ea`) | Sends learned digit-pair interactions to fixed decimal places `i+j`, then combines affine updates with a parallel scan. The arithmetic layout is supplied. |
+| AHappyCPU ([1f7c46f2](https://gist.github.com/msaroufim/dbb0ad21619d289f2e59407727031a4e#file-submission-py)) | Gradually replaces continuous recurrent states with discrete choices from a learned 64-entry codebook. |
+| Ethan Davis ([24c58fc1](https://gist.github.com/msaroufim/aad7a2eded25a7f57aa2f2acadb7cf00#file-submission-py)) | Uses N to generate convolution kernels that move information around a cyclic tape, making the update operation depend on the modulus. |
+| Chris Wood ([7f055799](https://gist.github.com/msaroufim/11ea2dc4c904a51ca6081611136d2b72#file-submission-py)) | Learns a five-instruction program from 16 supplied integer operations by comparing program outputs with labels. The interpreter is fixed; instruction composition is learned. |
+| Rohan Sehgal ([3854d99a](https://gist.github.com/msaroufim/bf0af5723e9b583017fd8e7913e121f7#file-submission-py)) | Learns wiring and add/multiply choices for three parallel gates per expert, with exact integer forward values and approximate gradients. Modular reduction is supplied. |
+| Aqua ([55bec2ea](https://gist.github.com/msaroufim/f3cd648ec768b8ca29dc19253d711b52#file-submission-py)) | Sends learned digit-pair interactions to fixed decimal places `i+j`, then combines affine updates with a parallel scan. The arithmetic layout is supplied. |
 
 ## Next steps
 

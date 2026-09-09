@@ -1,4 +1,4 @@
-# We still don't know if the models want to learn
+# What the models learned in One Layer Deeper
 
 Across the One Layer Deeper challenge, we received **15,602 accepted uploads from 206 GitHub accounts**.
 

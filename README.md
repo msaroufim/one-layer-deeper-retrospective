@@ -87,4 +87,4 @@ None of these submissions passed all the single-step (T=1) tests on Hard, but re
 
 Current submissions appear to learn wiring around Python primitives. Could we learn the calculator's wiring as well as its digit operations? The question is whether those parts transfer to unfamiliar algorithms and longer executions when trained end to end.
 
-All 15,602 uploads are preserved in the [private GPU MODE dataset on Hugging Face](https://huggingface.co/datasets/GPUMODE/one-layer-deeper-submissions) for further analysis.
+All 15,602 uploads are publicly available in the [GPU MODE dataset on Hugging Face](https://huggingface.co/datasets/GPUMODE/one-layer-deeper-submissions).

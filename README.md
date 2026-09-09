@@ -65,7 +65,7 @@ The [written rules](https://github.com/tilde-research/one-layer-deeper#rules) mi
 | Rule | Effect on the learning claim |
 |---|---|
 | **7:** “No hard-coded algorithm in the forward pass.” | Sahil selects supplied exact programs. CodeReclaimers directly computes its selected arithmetic law. |
-| **8:** “End-to-end learning only.” | Yash trains components separately from the full answer circuit. CodeReclaimers and Sahil select and execute supplied arithmetic laws. |
+| **8:** “End-to-end learning only.” | Yash trains components separately from the full answer circuit. |
 | **12/14:** custom losses allowed; solvers and hidden training prohibited | Whether arithmetic-generated targets count as a solver needs clarification. Custom losses or calls to component cells alone do not establish a violation. |
 | **9:** “Everything stays on the GPU.” | CPU fitting or target generation conflicts with the wording, but does not establish use of an oversized model. |
 

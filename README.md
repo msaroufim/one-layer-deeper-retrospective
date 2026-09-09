@@ -1,6 +1,6 @@
 # We still don't know if the models want to learn
 
-We received **15,602 accepted uploads from 206 GitHub accounts** to One Layer Deeper.
+Across the One Layer Deeper challenge, we received **15,602 accepted uploads from 206 GitHub accounts**.
 
 ## The challenge
 
@@ -12,19 +12,19 @@ for _ in range(T):
     z = z * z % N
 ```
 
-Our [launch post](https://blog.tilderesearch.com/blog/one-layer-deeper) asked participants to design architectures, optimizers, and losses that learn this computation and use greater depth at test time. Loops were allowed; supplying an arithmetic solver or generating additional training targets with one was prohibited.
+Our [launch post](https://blog.tilderesearch.com/blog/one-layer-deeper) asked participants to design architectures, optimizers, and losses that learn this computation and use greater depth at test time. Most machine learning methodologies were allowed, but using an arithmetic solver or generating additional training targets was prohibited.
 
-Hard allowed one H100, one hour of training, 30 minutes of evaluation, and 500 million model-state elements, including buffers. Depth was unrestricted. Certification required every example correct at consecutive rungs: T=1, 2, 4, 8, 16, 32, 64.
+Hard allowed one H100, one hour of training, 30 minutes of evaluation, and 500 million trainable parameters. Certification required every example to be correct at consecutive rungs: T=1, 2, 4, 8, 16, 32, 64.
 
-Only **18 Hard uploads from five accounts** certified any depth on seen-modulus tests: 16 reached T=64, one T=32, and one T=8. Two accounts had excluded entries containing code that encoded hidden training inputs and labels into reported losses, violating the metric-recorder rule. The other 143 ranked accounts failed T=1.
+Only **18 Hard uploads from five accounts** certified any depth on seen-modulus tests: 16 reached T=64, one T=32, and one T=8. Two accounts had rejected entries as they extracted the training data from the sandbox prior to this, violating the metric-recorder rule. The other 143 ranked accounts failed to be certified at T=1.
 
-Thanks to az and apaz for submissions that helped us refine the task and rules.
+Thanks to az and apaz for submissions that helped us refine the task and rules during the beta period.
 
 ## What the three leaders did
 
-**Hard reversed the decimal digits of N in the prompt.** A true modulus of `253` appeared as `352`; x, T, and the answer kept their normal digit order. The recurrence was still forward squaring. Yash and Sahil considered both operand digit orders; CodeReclaimers' modulus-mapping search included reversal.
+**Hard reversed the decimal digits of N in the prompt.** If N was `253`, it appeared in the Hard dataset as `352`; x, T, and the answer kept their normal digit order. The recurrence was still modular squaring.
 
-We discuss each leader's latest archived Hard upload with 100% aggregate accuracy: CodeReclaimers' `58311e4a`, Yash Kant's `86e9acf2`, and Sahil Verma's `9fa00118`. All certified T=64 on both seen and unseen moduli. These are stored results; we did not rerun these models.
+We discuss each leader's latest archived Hard upload with 100% aggregate accuracy: CodeReclaimers' `58311e4a`, Yash Kant's `86e9acf2`, and Sahil Verma's `9fa00118`. All certified T=64 on both seen and unseen moduli.
 
 ![Three illustrated mechanisms: computed residue transitions, learned digit cells, and selection among supplied programs.](assets/submission-ideas.svg)
 
@@ -34,9 +34,7 @@ We discuss each leader's latest archived Hard upload with 100% aggregate accurac
 (r + D * r * (r - 1) // 2) % m
 ```
 
-For D=2, this is `r*r % m`. The code caches maps for 1, 2, 4, and more transitions, then composes them using the bits of T. Separate small-modulus results constrain the final integer answer, as the illustration shows.
-
-Before law selection, it uses learned maps. This August 29 version differs from the older ranked upload, `d83efe07`, which trained tables using generated arithmetic targets. The later version computes the selected law instead of learning every transition value.
+For D=2, this is `r*r % m`. The code caches maps for 1, 2, 4, and more transitions, then composes them using the bits of T. Separate small-modulus results constrain the final integer answer.
 
 **Yash Kant (`86e9acf2`) learned digit operations inside a supplied calculator.** Small networks predict multiplication, addition, subtraction, carries, and borrows. A multiplication cell can learn `7 × 8 + carry 3 = 59`: output digit 9 and carry 5.
 
@@ -60,28 +58,22 @@ answer = execute_exactly(chosen, x, N, T)
 
 ## The winner
 
-The [written rules](https://github.com/tilde-research/one-layer-deeper#rules) mix restrictions on learning, resources, and evaluator control.
+The [written rules](https://github.com/tilde-research/one-layer-deeper#rules) have restrictions on learning, resources, and data. None of the current top submissions fully comply with the rules.
 
 | Rule | Effect on the learning claim |
 |---|---|
-| **7:** “No hard-coded algorithm in the forward pass.” | Sahil selects supplied exact programs. CodeReclaimers directly computes its selected arithmetic law. |
+| **7:** “No hard-coded algorithm in the forward pass.” | Sahil selects from exact programs. CodeReclaimers directly computes selected arithmetic laws. |
 | **8:** “End-to-end learning only.” | Yash trains components separately from the full answer circuit. |
-| **12/14:** custom losses allowed; solvers and hidden training prohibited | Whether arithmetic-generated targets count as a solver needs clarification. Custom losses or calls to component cells alone do not establish a violation. |
-| **9:** “Everything stays on the GPU.” | CPU fitting or target generation conflicts with the wording, but does not establish use of an oversized model. |
 
-We intended the CPU restriction to prevent escaping the memory budget. The reported model-state counts were 273,410,979 for the later CodeReclaimers upload, 66,137 for Yash, and 254,149 for Sahil, all below the 500-million ceiling.
-
-**Our winner is [Yash Kant](https://yashkant.github.io/).** His network learns reusable digit operations and composes them across repeated computation. The calculator's wiring is supplied, so this is a narrower result than learning the entire algorithm. Congrats Yash!
+All three leaderboard finalists and Apaz deserve huge credit for their solutions over the course of the competition. **Our winner is [Yash Kant](https://yashkant.github.io/).** We chose Yash for learning reusable digit operations and composing them across repeated computation. The calculator's wiring is supplied, so this is a narrower result than learning the entire algorithm. Congrats, Yash!
 
 ## Honourable mention
 
-**alirezashirvani-jr (`f5d75083`) reached 10.38% aggregate Hard accuracy.** It represents numbers as positions on clocks with different periods, learns transitions between those positions, and combines learned votes into an integer answer. Its larger-number branch uses learned Fourier operators that can be composed at evaluation.
-
-The transitions are learned rather than computed by an explicit squaring formula. It failed T=1 certification.
+**alirezashirvani-jr (`f5d75083`) reached 10.38% aggregate Hard accuracy.** It represents numbers as positions on clocks with different periods, learns transitions between those positions, and combines learned votes into an integer answer. Its larger-number branch uses learned Fourier operators that can be composed at evaluation. The transitions are learned rather than computed by an explicit squaring formula. Although it failed T=1 certification, its learned transitions distinguish it from the top leaderboard submissions, and its results are promising.
 
 ## Interesting ideas that didn't quite work
 
-None of these submissions passed all the single-step (T=1) tests on Hard.
+None of these submissions passed all the single-step (T=1) tests on Hard, but research is about much more than benchmark climbing.
 
 | Submission | Implemented idea |
 |---|---|
@@ -93,6 +85,6 @@ None of these submissions passed all the single-step (T=1) tests on Hard.
 
 ## Next steps
 
-Could we learn the calculator's wiring as well as its digit operations? Train the small operations first, then teach a controller to compose them from execution traces. The question is whether those parts transfer to unfamiliar algorithms and longer executions.
+Current submissions appear to learn wiring around Python primitives. Could we learn the calculator's wiring as well as its digit operations? The question is whether those parts transfer to unfamiliar algorithms and longer executions when trained end to end.
 
 All 15,602 uploads are preserved in the [private GPU MODE dataset on Hugging Face](https://huggingface.co/datasets/GPUMODE/one-layer-deeper-submissions) for further analysis.

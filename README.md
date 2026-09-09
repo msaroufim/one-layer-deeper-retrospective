@@ -81,26 +81,15 @@ The transitions are learned rather than computed by an explicit squaring formula
 
 ## Other ideas worth testing
 
-We checked these exact Hard uploads, including attempts superseded on the leaderboard. All failed T=1 certification. These are implemented ideas, without ablations establishing their benefit or claims of novelty.
+We checked these five Hard uploads. All failed T=1 certification; the techniques' benefit remains unproven.
 
 | Submission | Implemented idea |
 |---|---|
-| Blake Camp (`0f119b89`) | Gated matrix memories collect writes from prompt and workspace nodes, then feed reads back into a shared recurrent update. |
-| Ayush Nangia (`179288ee`) | Cross-attention reads the prompt into 44 latent slots. Shared convolutions and cumulative sums process the tape before answer positions query it. |
-| AHappyCPU (`1f7c46f2`) | A learned 64-entry codebook gradually discretizes recurrent states, with prompt reinjection and gradients through only a final rollout window. |
-| Ethan Davis (`24c58fc1`) | N generates cyclic transport kernels for a latent tape. T mixes four computed depths during training and selects one at evaluation. |
-| Aditya Ramabadran (`3a14c748`) | Embeds the initial prediction distribution, makes a refinement pass, then uses confidence and entropy changes to choose either answer. |
-| Dmp (`5d253b31`) | Repeats a shared normalized linear update and learns a mixture of intermediate states. Evaluation expands the rollout from eight to 64 steps. |
-| Jonathan Whitaker (`e55f8d46`) | Refines an answer workspace through associative retrieval. It computes seven states and selects one using `floor(log2(T)) + 1`. |
-| Chris Wood (`7f055799`) | Learns five instructions from a 16-operation integer language by comparing program outputs with labels, then repeats the selected instruction sequence. |
-| Rohan Sehgal (`3854d99a`) | Learns routing and add/multiply choices for three parallel gates in each of 49,152 experts. Integer forward values use surrogate gradients for training. |
-| Aqua (`55bec2ea`) | Routes learned digit-pair interactions to fixed decimal places `i+j`, then propagates information through an affine scan inside a shared update. |
-
-Chris learns the composition of generic instructions. Rohan learns a restricted arithmetic transition with fixed modular reduction. Neither should be described as discovering an unrestricted algorithm. Likewise, choosing among computed depths does not save the work of computing them.
-
-## What we learnt
-
-An hour per hosted run limits one submission, not the experimentation before it. Reversing N tests whether a method can recover an input convention, but the leaders show that supplied arithmetic procedures can accommodate that change too. Future evaluations should separate learning the representation, the operations, and their composition.
+| AHappyCPU (`1f7c46f2`) | Gradually replaces continuous recurrent states with discrete choices from a learned 64-entry codebook. |
+| Ethan Davis (`24c58fc1`) | Uses N to generate convolution kernels that move information around a cyclic tape, making the update operation depend on the modulus. |
+| Chris Wood (`7f055799`) | Learns a five-instruction program from 16 supplied integer operations by comparing program outputs with labels. The interpreter is fixed; instruction composition is learned. |
+| Rohan Sehgal (`3854d99a`) | Learns wiring and add/multiply choices for three parallel gates per expert, with exact integer forward values and approximate gradients. Modular reduction is supplied. |
+| Aqua (`55bec2ea`) | Sends learned digit-pair interactions to fixed decimal places `i+j`, then combines affine updates with a parallel scan. The arithmetic layout is supplied. |
 
 ## Next steps
 
